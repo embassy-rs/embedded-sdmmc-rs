@@ -13,7 +13,6 @@ macro_rules! sd_log {
 }
 
 #[cfg(not(any(feature = "log", feature = "defmt")))]
-#[macro_use]
 macro_rules! sd_log {
     ($level:ident, $($arg:expr),*) => { $( let _ = $arg; )* }
 }

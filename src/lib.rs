@@ -56,10 +56,6 @@
 //! ```
 
 #![cfg_attr(not(test), no_std)]
-#![feature(generic_associated_types)]
-#![allow(incomplete_features)]
-#![feature(min_type_alias_impl_trait)]
-#![feature(impl_trait_in_bindings)]
 #![feature(type_alias_impl_trait)]
 #![deny(missing_docs)]
 
