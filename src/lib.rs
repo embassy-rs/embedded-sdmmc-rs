@@ -56,7 +56,8 @@
 //! ```
 
 #![cfg_attr(not(test), no_std)]
-#![feature(type_alias_impl_trait)]
+#![feature(async_fn_in_trait)]
+#![allow(incomplete_features)]
 #![deny(missing_docs)]
 
 // ****************************************************************************
@@ -865,8 +866,8 @@ mod tests {
         type Error = Error;
 
         /// Read one or more blocks, starting at the given block index.
-        fn read(
-            &self,
+        async fn read(
+            &mut self,
             blocks: &mut [Block],
             start_block_idx: BlockIdx,
             _reason: &str,
@@ -1074,7 +1075,11 @@ mod tests {
         }
 
         /// Write one or more blocks, starting at the given block index.
-        fn write(&self, _blocks: &[Block], _start_block_idx: BlockIdx) -> Result<(), Self::Error> {
+        async fn write(
+            &mut self,
+            _blocks: &[Block],
+            _start_block_idx: BlockIdx,
+        ) -> Result<(), Self::Error> {
             unimplemented!();
         }
 

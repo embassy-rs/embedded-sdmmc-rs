@@ -1,7 +1,6 @@
 //! embedded-sdmmc-rs - Block Device support
 //!
 //! Generic code for handling block devices.
-use core::future::Future;
 
 /// Represents a standard 512 byte block (also known as a sector). IBM PC
 /// formatted 5.25" and 3.5" floppy disks, SD/MMC cards up to 1 GiB in size
@@ -41,30 +40,20 @@ pub trait BlockDevice {
     /// The errors that the `BlockDevice` can return. Must be debug formattable.
     type Error: core::fmt::Debug;
 
-    /// The future returned for a read operation.
-    type ReadFuture<'a>: Future<Output = Result<(), Self::Error>> + 'a
-    where
-        Self: 'a;
-
-    /// The future returned for a write opration.
-    type WriteFuture<'a>: Future<Output = Result<(), Self::Error>> + 'a
-    where
-        Self: 'a;
-
     /// Read one or more blocks, starting at the given block index.
-    fn read<'a>(
-        &'a mut self,
-        blocks: &'a mut [Block],
+    async fn read(
+        &mut self,
+        blocks: &mut [Block],
         start_block_idx: BlockIdx,
         reason: &str,
-    ) -> Self::ReadFuture<'a>;
+    ) -> Result<(), Self::Error>;
 
     /// Write one or more blocks, starting at the given block index.
-    fn write<'a>(
-        &'a mut self,
-        blocks: &'a [Block],
+    async fn write(
+        &mut self,
+        blocks: &[Block],
         start_block_idx: BlockIdx,
-    ) -> Self::WriteFuture<'a>;
+    ) -> Result<(), Self::Error>;
 
     /// Determine how many blocks this device can hold.
     fn num_blocks(&self) -> Result<BlockCount, Self::Error>;
