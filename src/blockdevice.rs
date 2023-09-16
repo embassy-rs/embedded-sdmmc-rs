@@ -56,7 +56,7 @@ pub trait BlockDevice {
     ) -> Result<(), Self::Error>;
 
     /// Determine how many blocks this device can hold.
-    fn num_blocks(&self) -> Result<BlockCount, Self::Error>;
+    async fn num_blocks(&self) -> Result<BlockCount, Self::Error>;
 }
 
 impl Block {
